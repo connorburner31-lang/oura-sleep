@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authorization Callback</title>
+</head>
+<body>
+  <h1>Authorization complete</h1>
+  <p id="status">Processing authorization response...</p>
+  <script>
+    // OAuth redirect target. Reads the authorization code from the query string
+    // (or token from the fragment for implicit flow) and displays it so it can
+    // be captured. Nothing is transmitted anywhere.
+    var status = document.getElementById('status');
+    var params = new URLSearchParams(window.location.search);
+    var code = params.get('code');
+    var error = params.get('error');
+    if (code) {
+      status.textContent = 'Authorization code received. This tab can be closed.';
+      document.title = 'Authorization complete';
+    } else if (window.location.hash) {
+      status.textContent = 'Authorization response received. This tab can be closed.';
+    } else if (error) {
+      status.textContent = 'Authorization was not completed: ' + error;
+    } else {
+      status.textContent = 'No authorization response found in this URL.';
+    }
+  </script>
+</body>
+</html>
